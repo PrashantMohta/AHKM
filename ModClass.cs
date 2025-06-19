@@ -1,4 +1,5 @@
-﻿using Modding;
+﻿using AHKM.UnityComponents;
+using Modding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,8 +32,16 @@ namespace AHKM
             Instance = this;
 
             Log("Initialized");
+            On.HeroController.Start += ApplyRainbowEffect;
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
+
+        private void ApplyRainbowEffect(On.HeroController.orig_Start orig, HeroController self)
+        {
+            orig(self);
+            if (self.GetComponent<ColorShifter>() == null)
+                self.gameObject.AddComponent<ColorShifter>();
+        }
     }
 }
