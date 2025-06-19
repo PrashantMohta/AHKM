@@ -29,11 +29,12 @@ namespace AHKM
             Log("Initializing");
 
             Instance = this;
-
+            Log("Grub");
+            
             Log("Initialized");
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
-        Log("Grub");
+        
     }
 }
