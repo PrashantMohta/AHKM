@@ -11,13 +11,13 @@ namespace AHKM
     {
         internal static AHKM Instance;
 
-        //public override List<ValueTuple<string, string>> GetPreloadNames()
-        //{
-        //    return new List<ValueTuple<string, string>>
-        //    {
+        public override List<ValueTuple<string, string>> GetPreloadNames()
+        {
+            return new List<ValueTuple<string, string>>
+            {
         //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
-        //    };
-        //}
+            };
+        }
 
         //public AHKM() : base("AHKM")
         //{
