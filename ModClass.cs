@@ -34,5 +34,6 @@ namespace AHKM
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
+        Log("Grub");
     }
 }
