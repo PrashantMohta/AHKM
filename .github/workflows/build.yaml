@@ -39,7 +39,7 @@ jobs:
         working-directory: master
 
       - name: Build master
-        run: dotnet build -c Release /p:AssemblyVersion=${{ steps.tag_number.outputs.tag_number }}
+        run: dotnet build -c Release /p:AssemblyVersion=${{ steps.tag_number.outputs.tag_number }} /p:IsActionWorkflow=TRUE
         shell: bash
         working-directory: master
 

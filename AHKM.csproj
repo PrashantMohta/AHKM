@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <!-- Create a LocalBuildProperties.props file which defines HollowKnightRefs directory -->
-  <Import Project="LocalBuildProperties_example.props" Condition="Exists('LocalBuildProperties_example.props')" />
+  <Import Project="LocalBuildProperties_example.props" Condition="Exists('LocalBuildProperties_example.props') AND '$(IsActionWorkflow)' != 'TRUE'" />
   <Import Project="LocalBuildProperties.props" Condition="Exists('LocalBuildProperties.props')" />
 
   <!-- Externalized build steps to keep csproj clean -->
