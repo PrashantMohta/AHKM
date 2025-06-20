@@ -11,13 +11,13 @@ namespace AHKM
     {
         internal static AHKM Instance;
 
-        //public override List<ValueTuple<string, string>> GetPreloadNames()
-        //{
-        //    return new List<ValueTuple<string, string>>
-        //    {
+        public override List<ValueTuple<string, string>> GetPreloadNames()
+        {
+            return new List<ValueTuple<string, string>>
+            {
         //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
-        //    };
-        //}
+            };
+        }
 
         //public AHKM() : base("AHKM")
         //{
@@ -29,7 +29,8 @@ namespace AHKM
             Log("Initializing");
 
             Instance = this;
-
+            Log("Grub");
+            
             Log("Initialized");
 
             // I'm sorry
@@ -44,8 +45,11 @@ namespace AHKM
                     .Split(new[] { "<br>" }, StringSplitOptions.None)[0];
                 return info + "<br><br>" + orig.Split(new[] { "<br>" }, StringSplitOptions.None)[2];
             };
+
+            ModHooks.HeroUpdateHook += () => { HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1); };
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
+        
     }
 }
