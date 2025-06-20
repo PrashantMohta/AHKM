@@ -34,7 +34,10 @@ namespace AHKM
             Log("Initialized");
 
             // I'm sorry
-            On.CharmIconList.GetSprite += (orig, self, _) => orig(self, 11);
+            On.CharmIconList.GetSprite += (orig, self, _) =>
+            {
+                orig(self, 11);
+            };
             
             ModHooks.LanguageGetHook += (key, title, orig) =>
             {
@@ -46,13 +49,22 @@ namespace AHKM
                 return info + "<br><br>" + orig.Split(new[] { "<br>" }, StringSplitOptions.None)[2];
             };
 
-            ModHooks.HeroUpdateHook += () => { HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1); };
+            ModHooks.HeroUpdateHook += () =>
+            {
+                HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1);
+            };
 
-            // lol
-            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (from, to) => { var go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount]; Log($"Disabling {go}"); go.SetActive(false); };
+            // disable random root gameobject, mostly does nothing as they are just disabled, not removed and gamelogic usually enables them at one point or another. so on early scenes, e.g. Scene_Title, with buildindex 1 it only disables either of the cameras, neither of which actually handle the keyboard input of the menu items, so the game can still be closed, therefore making the game technically not unplayable, even if it temporarily is.
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (from, to) =>
+            {
+                var go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount];
+                Log($"Disabling {go}");
+                go.SetActive(false);
+            };
         }
 
-        public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
-        
+        public virtual void spawnThing(GameObject gameObject, Vector3 position)
+        {
+        }
     }
 }
