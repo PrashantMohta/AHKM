@@ -29,10 +29,27 @@ namespace AHKM
             Log("Initializing");
 
             Instance = this;
-
+            Log("Grub");
+            
             Log("Initialized");
+
+            // I'm sorry
+            On.CharmIconList.GetSprite += (orig, self, _) => orig(self, 11);
+            
+            ModHooks.LanguageGetHook += (key, title, orig) =>
+            {
+                if (key.EndsWith("11")) return orig;
+                if (key.StartsWith("CHARM_NAME_")) return Language.Language.Get("CHARM_NAME_11", title);
+                if (!key.StartsWith("CHARM_DESC_")) return orig;
+                var info = Language.Language.Get("CHARM_DESC_11", title)
+                    .Split(new[] { "<br>" }, StringSplitOptions.None)[0];
+                return info + "<br><br>" + orig.Split(new[] { "<br>" }, StringSplitOptions.None)[2];
+            };
+
+            ModHooks.HeroUpdateHook += () => { HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1); };
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
+        
     }
 }
