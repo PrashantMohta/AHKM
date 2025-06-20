@@ -39,5 +39,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources/**" />
     <EmbeddedResource Remove="Resources/.gitignore" />
+    <EmbeddedResource Include="Assets/*" />
   </ItemGroup>
 </Project>

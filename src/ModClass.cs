@@ -15,7 +15,7 @@ namespace AHKM
         {
             return new List<ValueTuple<string, string>>
             {
-        //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
+                //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
             };
         }
 
@@ -29,8 +29,11 @@ namespace AHKM
             Log("Initializing");
 
             Instance = this;
-            Log("Grub");
+
+            AssetManager.Initialize();
             
+            Log("Grub");
+
             Log("Initialized");
 
             // I'm sorry
@@ -38,7 +41,7 @@ namespace AHKM
             {
                 return orig(self, 11);
             };
-            
+
             ModHooks.LanguageGetHook += (key, title, orig) =>
             {
                 if (key.EndsWith("11")) return orig;
