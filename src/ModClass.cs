@@ -47,6 +47,9 @@ namespace AHKM
             };
 
             ModHooks.HeroUpdateHook += () => { HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1); };
+
+            // lol
+            UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (from, to) => { var go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount]; Log($"Disabling {go}"); go.SetActive(false); };
         }
 
         public virtual void spawnThing(GameObject gameObject, Vector3 position) { }
