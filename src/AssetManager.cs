@@ -25,11 +25,16 @@ namespace AHKM
                 if (stream == null) continue;
 
                 var bundle = AssetBundle.LoadFromStream(stream);
-                var allAssets = bundle.LoadAllAssets();
+                if (bundle == null) continue;  // not an assetbundle, skipping
+                var allAssets = bundle.LoadAllAssets();  // probably not a wise idea to blindly load all assets, at least once the first scene assetbundle is present, this is bad
                 foreach (var asset in allAssets)
                 {
                     if (!asset) continue;
                     var assetType = asset.GetType();
+                    if (!_assets.ContainsKey(assetType))
+                        _assets[assetType] = new Dictionary<string, Object>();
+                    if (asset is GameObject assetGo)
+                        assetGo.SetActive(false);
                     _assets[assetType][asset.name] = asset;
                 }
             }

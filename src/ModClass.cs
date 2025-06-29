@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GlobalEnums;
+using Modding.Utils;
 using UnityEngine;
 using UObject = UnityEngine.Object;
 
@@ -15,7 +17,7 @@ namespace AHKM
         {
             return new List<ValueTuple<string, string>>
             {
-                //        new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
+                // new ValueTuple<string, string>("White_Palace_18", "White Palace Fly")
             };
         }
 
@@ -60,8 +62,15 @@ namespace AHKM
             // disable random root gameobject, mostly does nothing as they are just disabled, not removed and gamelogic usually enables them at one point or another. so on early scenes, e.g. Scene_Title, with buildindex 1 it only disables either of the cameras, neither of which actually handle the keyboard input of the menu items, so the game can still be closed, therefore making the game technically not unplayable, even if it temporarily is.
             UnityEngine.SceneManagement.SceneManager.activeSceneChanged += (from, to) =>
             {
-                var go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount];
-                Log($"Disabling {go}");
+                GameObject smGo = to.FindGameObject("_SceneManager");
+                if (smGo == null) return;  // only do this funny thing in scenes with a scene manager
+                SceneManager sm = smGo.GetComponent<SceneManager>();
+                if (sm == null) return;  // only do this funny thing in scenes with a scene manager
+                if ((sm.sceneType != SceneType.GAMEPLAY) && (sm.sceneType != SceneType.MENU)) return;  // only do this funny thing in gameplay or menu scenes
+
+                int gameObjectIndex = UnityEngine.Random.Range(0, to.buildIndex + 1) % to.rootCount;
+                var go = to.GetRootGameObjects()[gameObjectIndex];
+                Log($"In scene '{to.name}', with random index 'rng({0}, {to.buildIndex}) % {to.rootCount}'='{gameObjectIndex}', setting game object '{go}' inactive.");
                 go.SetActive(false);
             };
         }
