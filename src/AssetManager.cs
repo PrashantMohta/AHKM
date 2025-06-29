@@ -30,7 +30,11 @@ namespace AHKM
                 {
                     if (!asset) continue;
                     var assetType = asset.GetType();
-                    _assets[assetType][asset.name] = asset;
+                    _assets.Add(assetType, new() {
+                    {
+                            asset.name,
+                            asset
+                    } });
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using Modding;
+﻿using JetBrains.Annotations;
+using Modding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace AHKM
             Instance = this;
 
             AssetManager.Initialize();
-            
+
             Log("Grub");
 
             Log("Initialized");
@@ -63,10 +64,17 @@ namespace AHKM
                 var go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount];
                 Log($"Disabling {go}");
                 go.SetActive(false);
+                // enables exiting the game, and then try disabling another random gameobject if that was needed.
+                while ("{go}".Contains("QuitToMenu"))
+                    go.SetActive(true);
+                    Log($"Enabling {go}");
+                    go = to.GetRootGameObjects()[UnityEngine.Random.Range(0, to.buildIndex) % to.rootCount];
+                    go.SetActive(false);
+                    Log($"Disabling {go}");
             };
         }
 
-        public virtual void spawnThing(GameObject gameObject, Vector3 position)
+        public virtual void SpawnThing(GameObject gameObject, Vector3 position)
         {
         }
     }
