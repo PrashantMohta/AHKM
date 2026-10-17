@@ -6,12 +6,20 @@ using GlobalEnums;
 using Modding.Utils;
 using UnityEngine;
 using UObject = UnityEngine.Object;
+using UnityEngine.SceneManagement;
+ 
 
 namespace AHKM
 {
     public class AHKM : Mod
     {
         internal static AHKM Instance;
+
+
+
+        private float timer = 0f;
+        private const float timerDuration = 10f;
+
 
         public override List<ValueTuple<string, string>> GetPreloadNames()
         {
@@ -33,11 +41,15 @@ namespace AHKM
             Instance = this;
 
             AssetManager.Initialize();
+
+            ModHooks.HeroUpdateHook += HeroUpdateHook;
             
             Log("Grub");
 
             Log("Initialized");
 
+            // what does this even do?? 😭 - muffincakes65 <- i felt like putting my name here cause why not
+            // i have found out what it does. - muffincakes65
             // I'm sorry
             On.CharmIconList.GetSprite += (orig, self, _) =>
             {
@@ -57,6 +69,7 @@ namespace AHKM
             ModHooks.HeroUpdateHook += () =>
             {
                 HeroController.instance.GetComponent<tk2dSprite>().color = Color.HSVToRGB(Time.timeSinceLevelLoad - (int)Time.timeSinceLevelLoad, 1, 1);
+                // please i beg whoever adds to this next i beg of you make the shade rainbow as well - muffincakes65
             };
 
             // disable random root gameobject, mostly does nothing as they are just disabled, not removed and gamelogic usually enables them at one point or another. so on early scenes, e.g. Scene_Title, with buildindex 1 it only disables either of the cameras, neither of which actually handle the keyboard input of the menu items, so the game can still be closed, therefore making the game technically not unplayable, even if it temporarily is.
@@ -75,8 +88,35 @@ namespace AHKM
             };
         }
 
+
+
+
+        private const int dmgIncrease = 2;
+
+        private void HeroUpdateHook()
+        {
+            HeroController hero = HeroController.instance;
+            PlayerData pd = hero.playerData;
+
+
+            timer += Time.deltaTime;
+
+            if (timer >= timerDuration)
+            {
+                timer -= timerDuration;
+
+                
+                pd.nailDamage += dmgIncrease;
+
+                PlayMakerFSM.BroadcastEvent("UPDATE NAIL DAMAGE");
+            }
+           
+        }
+
         public virtual void spawnThing(GameObject gameObject, Vector3 position)
         {
         }
+
+        
     }
 }
